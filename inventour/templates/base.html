@@ -18,21 +18,21 @@
       <ul class="navbar-bar">
         {% if g.user %}
         <li class="nav-item">
-          <span href="#">{{ g.user["username"] }}</span>
+          <span>{{ g.user["username"] }}</span>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="{{ url_for("auth.logout") }}">
+          <a class="nav-link" href="{{ url_for('auth.logout') }}">
             Logout
           </a>
         </li>
         
         {% else %}
         <li class="nav-item">
-          <a class="nav-link" href="{{ url_for("auth.register") }}">Register
+          <a class="nav-link" href="{{ url_for('auth.register') }}">Register
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="{{ url_for("auth.login") }}">Login
+          <a class="nav-link" href="{{ url_for('auth.login') }}">Login
           </a>
         </li>
         {% endif %}
