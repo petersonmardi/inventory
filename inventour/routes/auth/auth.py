@@ -66,11 +66,16 @@ def login():
         if error is None:
             session.clear()
             session["user_id"] = user["id"]
-            return redirect(url_for("index.index"))
+            return redirect(url_for("inventory.index"))
         
         flash(error)
     return render_template("auth/login.html")
     
+@bp.route("/logout")
+def logout():
+    session.clear()
+    return redirect(url_for("index"))
+
 @bp.before_app_request
 def load_logged_in_user():
     user_id = session.get("user_id")
