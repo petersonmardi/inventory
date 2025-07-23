@@ -5,3 +5,34 @@
 {% endblock %}
 
 {% block title %} Inventory Management {% endblock %}
+
+{% block content %}
+  <h2 class="my-3">Existing categories and subcategories</h2>
+  
+  {% if g.user %}
+      <button class="btn btn-primary mb-3" type="button" value="New">
+        <a class="nav-link" href="{{ url_for('index.create')}}">Add Category & Subcategory</a>
+      </button>
+  {% endif %}
+  {% if g.user %}
+      <button class="btn btn-primary mb-3" type="button" value="New">
+        <a class="nav-link" href="{{ url_for('index.add_product')}}">New Product</a>
+      </button>
+  {% endif %}
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Categories</th>
+        <th>Subcategories</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for row in data %}
+      <tr>
+        <td>{{ row["category"] }}</td>
+        <td>{{ row["subcategory"] }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}

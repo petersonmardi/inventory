@@ -66,7 +66,7 @@ def login():
         if error is None:
             session.clear()
             session["user_id"] = user["id"]
-            return redirect(url_for("inventory.index"))
+            return redirect(url_for("index.index"))
         
         flash(error)
     return render_template("auth/login.html")

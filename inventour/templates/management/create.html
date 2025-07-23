@@ -1,0 +1,183 @@
+{% extends "base.html" %}
+
+{% block head %}
+  {{ super() }}
+  
+  <style>
+    .tag-badge {
+      margin-right: 5px;
+    }
+  </style>
+{% endblock %}
+
+{% block title %}
+  Inventory Management System
+{% endblock %}
+
+{% block content %}
+<div class="bg-light">
+  <div class="container py-5">
+    <h2 class="mb-4 text-center">Inventory Management System</h2>
+
+    <!-- Tabs -->
+    <ul class="nav nav-tabs" id="inventoryTabs" role="tablist">
+      <li class="nav-item" role="presentation">
+        <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#categories" type="button">Categories</button>
+      </li>
+      <li class="nav-item" role="presentation">
+        <button class="nav-link" data-bs-toggle="tab" data-bs-target="#products" type="button">Products</button>
+      </li>
+    </ul>
+
+    <!-- Tab Content -->
+    <div class="tab-content border border-top-0 p-4 bg-white">
+      
+      <!-- Categories -->
+      <div class="tab-pane fade show active" id="categories">
+        <form action="{{ url_for('index.create') }}" method="post" id="categoryForm">
+          <div class="mb-3">
+            <label for="category" class="form-label">New Category</label>
+            <input type="text" name="category" class="form-control" id="categoryInput" placeholder="e.g., Personal Care">
+          </div>
+          <div class="mb-3" disabled>
+            <label for="subcategory" class="form-label">New Subcategory</label>
+            <input type="text" name="subcategory" class="form-control" id="subcategoryInput" placeholder="e.g., Shampoo">
+          </div>
+          <button type="submit" class="btn btn-primary">Add Category & Subcategory</button>
+        </form>
+      </div>
+
+      <!-- Products -->
+      <div class="tab-pane fade" id="products">
+        <form action="{{ url_for('index.add_product') }}" id="productForm">
+          <div class="mb-3">
+            <label class="form-label">Product Name</label>
+            <input type="text" class="form-control" id="productName" placeholder="e.g., Herbal Shampoo">
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Category</label>
+            <select class="form-select" id="categorySelect">
+              <option disabled selected>Select Category</option>
+              {% for row in data %}
+                <option value="{{ row['category'] }}">{{ row['category'] }}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Subcategory</label>
+            <select class="form-select" id="subcategorySelect">
+              <option disabled selected>Select Subcategory</option>
+              {% for row in data %}
+                <option value="{{ row['subcategory'] }}">{{ row['subcategory'] }}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Tags (comma-separated)</label>
+            <input type="text" class="form-control" id="tagInput" placeholder="e.g., organic, summer, eco">
+            <div class="mt-2" id="tagPreview"></div>
+          </div>
+
+          <!-- Variant Section -->
+          <div class="border rounded p-3 mb-3">
+            <h5>Product Variants</h5>
+            <div id="variantContainer"></div>
+            <button type="button" class="btn btn-outline-secondary btn-sm mt-2" id="addVariantBtn">Add Variant</button>
+          </div>
+
+          <button type="submit" class="btn btn-success">Save Product</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- <script>
+    const categoryInput = document.getElementById('categoryInput');
+    const subcategoryInput = document.getElementById('subcategoryInput');
+    const categorySelect = document.getElementById('categorySelect');
+    const subcategorySelect = document.getElementById('subcategorySelect');
+    const categoryForm = document.getElementById('categoryForm');
+    const productForm = document.getElementById('productForm');
+    const tagInput = document.getElementById('tagInput');
+    const tagPreview = document.getElementById('tagPreview');
+    const variantContainer = document.getElementById('variantContainer');
+    const addVariantBtn = document.getElementById('addVariantBtn');
+
+    const categories = new Set();
+    const subcategories = new Set();
+
+    categoryForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const category = categoryInput.value.trim();
+      const subcategory = subcategoryInput.value.trim();
+
+      if (category && !categories.has(category)) {
+        categories.add(category);
+        const opt = document.createElement('option');
+        opt.text = category;
+        categorySelect.add(opt);
+      }
+
+      if (subcategory && !subcategories.has(subcategory)) {
+        subcategories.add(subcategory);
+        const opt = document.createElement('option');
+        opt.text = subcategory;
+        subcategorySelect.add(opt);
+      }
+
+      categoryInput.value = '';
+      subcategoryInput.value = '';
+    });
+
+    tagInput.addEventListener('input', () => {
+      const tags = tagInput.value.split(',').map(tag => tag.trim()).filter(tag => tag.length > 0);
+      tagPreview.innerHTML = '';
+      tags.forEach(tag => {
+        const badge = document.createElement('span');
+        badge.className = 'badge bg-info tag-badge';
+        badge.innerText = tag;
+        tagPreview.appendChild(badge);
+      });
+    });
+
+    function createVariantRow() {
+      const row = document.createElement('div');
+      row.className = 'row g-2 mb-2 variant-row';
+
+      row.innerHTML = `
+        <div class="col-md-4">
+          <input type="text" class="form-control" placeholder="Size (e.g., 250ml)">
+        </div>
+        <div class="col-md-3">
+          <input type="number" class="form-control" placeholder="Price">
+        </div>
+        <div class="col-md-3">
+          <input type="number" class="form-control" placeholder="Discount (%)">
+        </div>
+        <div class="col-md-2 d-flex align-items-center">
+          <button type="button" class="btn btn-danger btn-sm remove-variant">×</button>
+        </div>
+      `;
+
+      row.querySelector('.remove-variant').addEventListener('click', () => {
+        row.remove();
+      });
+
+      variantContainer.appendChild(row);
+    }
+
+    addVariantBtn.addEventListener('click', createVariantRow);
+
+    productForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      alert("Product saved! (This is just a UI. Connect to backend for full save.)");
+    });
+
+    // Initial variant row
+    createVariantRow();
+  </script> -->
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</div>
+
+{% endblock %}
