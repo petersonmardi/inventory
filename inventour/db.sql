@@ -13,9 +13,9 @@ CREATE TABLE IF NOT EXISTS "category" (
 -- 2. Subcategories
 CREATE TABLE IF NOT EXISTS "subcategory" (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    name VARCHAR(100) NOT NULL,
+    name VARCHAR(100) NOT NULL UNIQUE,
     category_id INTEGER,
-    FOREIGN KEY (category_id) REFERENCES categories(id) ON DELETE CASCADE
+    FOREIGN KEY (category_id) REFERENCES category(id) ON DELETE CASCADE
 );
 
 -- 3. Products
@@ -25,7 +25,7 @@ CREATE TABLE IF NOT EXISTS "product" (
     description TEXT,
     barcode VARCHAR(50) UNIQUE,
     subcategory_id INTEGER,
-    FOREIGN KEY (subcategory_id) REFERENCES subcategories(id) ON DELETE SET NULL
+    FOREIGN KEY (subcategory_id) REFERENCES subcategory(id) ON DELETE SET NULL
 );
 
 -- 4. Product Variants
@@ -36,7 +36,7 @@ CREATE TABLE IF NOT EXISTS "product_variant" (
     color VARCHAR(50),
     price DECIMAL(10,2),
     stock INT DEFAULT 0,
-    FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE CASCADE
+    FOREIGN KEY (product_id) REFERENCES product(id) ON DELETE CASCADE
 );
 
 -- 5. Product Images
@@ -46,7 +46,7 @@ CREATE TABLE IF NOT EXISTS "product_image" (
     image_url TEXT NOT NULL,
     alt_text VARCHAR(255),
     is_primary BOOLEAN DEFAULT FALSE,
-    FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE CASCADE
+    FOREIGN KEY (product_id) REFERENCES product(id) ON DELETE CASCADE
 );
 
 -- 6. Tags
@@ -60,8 +60,8 @@ CREATE TABLE IF NOT EXISTS "product_tag" (
     product_id INTEGER,
     tag_id INTEGER,
     PRIMARY KEY (product_id, tag_id),
-    FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE CASCADE,
-    FOREIGN KEY (tag_id) REFERENCES tags(id) ON DELETE CASCADE
+    FOREIGN KEY (product_id) REFERENCES product(id) ON DELETE CASCADE,
+    FOREIGN KEY (tag_id) REFERENCES tag(id) ON DELETE CASCADE
 );
 
 -- 8. Variant Discounts
@@ -71,7 +71,7 @@ CREATE TABLE IF NOT EXISTS "variant_discount" (
     discount_percent DECIMAL(5,2),
     start_date DATE,
     end_date DATE,
-    FOREIGN KEY (variant_id) REFERENCES product_variants(id) ON DELETE CASCADE
+    FOREIGN KEY (variant_id) REFERENCES product_variant(id) ON DELETE CASCADE
 );
 
 -- 9. Product Translations
@@ -81,6 +81,6 @@ CREATE TABLE IF NOT EXISTS "product_translation" (
     language_code VARCHAR(10),
     translated_name VARCHAR(150),
     translated_description TEXT,
-    FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE CASCADE,
+    FOREIGN KEY (product_id) REFERENCES product(id) ON DELETE CASCADE,
     UNIQUE (product_id, language_code)
 );
