@@ -1,0 +1,13 @@
+.virtual_env/
+*.pyc
+__pycache__/
+
+instance/
+.coverage
+htmlcov/
+
+dist/
+build/
+*.egg-info/
+
+.pytest_cache/
