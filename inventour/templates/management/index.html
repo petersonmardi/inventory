@@ -11,14 +11,14 @@
   
   {% if g.user %}
       <button class="btn btn-primary mb-3" type="button" value="New">
-        <a class="nav-link" href="{{ url_for('index.create')}}">Add Category & Subcategory</a>
+        <a class="nav-link" href="{{ url_for('index.add_category_subcategory')}}">Add</a>
       </button>
   {% endif %}
-  {% if g.user %}
+  <!-- {% if g.user %}
       <button class="btn btn-primary mb-3" type="button" value="New">
         <a class="nav-link" href="{{ url_for('index.add_product')}}">New Product</a>
       </button>
-  {% endif %}
+  {% endif %} -->
   <table class="table table-striped">
     <thead>
       <tr>

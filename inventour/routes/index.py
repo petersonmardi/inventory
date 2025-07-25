@@ -23,9 +23,9 @@ def index():
     return render_template("management/index.html", data=data)
 
 
-@bp.route("/create", methods=("POST","GET"))
+@bp.route("/add_category_subcategory", methods=("POST","GET"))
 @login_required
-def create():
+def add_category_subcategory():
     if request.method == "POST":
         category = request.form["category"].strip() # .strip() to remove leading/trailing whitespace
         subcategory = request.form["subcategory"].strip() # .strip() to remove leading/trailing whitespace

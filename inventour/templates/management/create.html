@@ -34,7 +34,7 @@
       
       <!-- Categories -->
       <div class="tab-pane fade show active" id="categories">
-        <form action="{{ url_for('index.create') }}" method="post" id="categoryForm">
+        <form action="{{ url_for('index.add_category_subcategory') }}" method="post" id="categoryForm">
           <div class="mb-3">
             <label for="category" class="form-label">New Category</label>
             <input type="text" name="category" class="form-control" id="categoryInput" placeholder="e.g., Personal Care">
@@ -55,6 +55,14 @@
             <input type="text" class="form-control" id="productName" placeholder="e.g., Herbal Shampoo">
           </div>
           <div class="mb-3">
+            <label class="form-label">Description</label>
+            <input type="text" class="form-control" id="description" placeholder="e.g., Description of the product">
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Barcode</label>
+            <input type="text" class="form-control" id="barcode" placeholder="e.g., 1234567890123">
+          </div>
+          <!-- <div class="mb-3">
             <label class="form-label">Category</label>
             <select class="form-select" id="categorySelect">
               <option disabled selected>Select Category</option>
@@ -62,7 +70,7 @@
                 <option value="{{ row['category'] }}">{{ row['category'] }}</option>
               {% endfor %}
             </select>
-          </div>
+          </div> -->
           <div class="mb-3">
             <label class="form-label">Subcategory</label>
             <select class="form-select" id="subcategorySelect">
