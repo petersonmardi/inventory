@@ -7,8 +7,8 @@
 {% block title %} Inventory Management {% endblock %}
 
 {% block content %}
-  <h2 class="my-3">Existing categories and subcategories</h2>
-  
+  <h2 class="my-3">Inventory</h2>
+
   {% if g.user %}
       <button class="btn btn-primary mb-3" type="button" value="New">
         <a class="nav-link" href="{{ url_for('index.add_category_subcategory')}}">Add</a>
@@ -24,6 +24,18 @@
       <tr>
         <th>Categories</th>
         <th>Subcategories</th>
+        <th>Product</th>
+        <th>Description</th>
+        <th>Barcode</th>
+        <th>Size</th>
+        <th>Color</th>
+        <th>Price</th>
+        <th>Stock</th>
+        <th>Discount</th>
+            {% if g.user %}
+            <th class="text-danger">Delete</th>
+            <th class="text-primary">Edit</th>
+            {% endif %}
       </tr>
     </thead>
     <tbody>
@@ -31,6 +43,18 @@
       <tr>
         <td>{{ row["category"] }}</td>
         <td>{{ row["subcategory"] }}</td>
+        <td>{{ row["product"] }} or product</td>
+        <td>{{ row["description"] }} or description</td>
+        <td>{{ row["barcode"] }} or barcode</td>
+        <td>{{ row["size"] }} or size</td>
+        <td>{{ row["color"] }} or color</td>
+        <td>{{ row["price"] }} or price</td>
+        <td>{{ row["stock"] }} or stock</td>
+        <td>{{ row["discount"] }} or discount</td>
+            {% if g.user %}
+            <td>Delete</td>
+            <td>Edit</td>
+            {% endif %}
       </tr>
       {% endfor %}
     </tbody>
